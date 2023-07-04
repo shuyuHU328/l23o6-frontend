@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import { useStationsStore } from "~/stores/stations";
 import { parseDate } from "~/utils/date";
 import { TicketInfo } from "~/utils/interfaces";
+import { PaymentInfo } from "~/utils/interfaces";
 import { PropType } from "vue";
 
 const props = defineProps({
@@ -26,6 +27,19 @@ const stations = useStationsStore()
 const user = useUserStore()
 const router = useRouter()
 
+const aliPay : PaymentInfo = {
+  type: "支付宝",
+  trueType:"alipay",
+  status: true
+} as PaymentInfo;
+
+const pointPay: PaymentInfo = {
+  type: "积分支付",
+  trueType: "credit",
+  status: true
+} as PaymentInfo;
+
+const paymentMethods = [aliPay,pointPay]
 
 const orderFormRef = ref<FormInstance>()
 let orderForm = reactive({
@@ -34,6 +48,7 @@ let orderForm = reactive({
   idn: user.idn,
   phone: user.phone,
   seat_type: '',
+  payment_type:'',
 })
 
 const orderRules = reactive<FormRules>({
@@ -52,6 +67,7 @@ const orderRules = reactive<FormRules>({
     pattern: /^1[3456789]\d{9}$/, message: '手机号码不符合要求', trigger: 'change'
   }],
   seat_type: [{ required: true, message: '此字段为必填项', trigger: 'change' }],
+  payment_type:[{ required: true, message: '此字段为必填项', trigger: 'change' }],
 })
 
 const submitOrderForm = (formEl: FormInstance | undefined) => {
@@ -73,7 +89,8 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
         },
         start_station_id: props.start_station_id,
         end_station_id: props.end_station_id,
-        seat_type: orderForm.seat_type
+        seat_type: orderForm.seat_type,
+        payment_type: orderForm.payment_type,
       }
     })
 
@@ -164,6 +181,12 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       <el-select v-model="orderForm.seat_type">
         <el-option v-for="ticket in props.ticket_info" :value="ticket.type" :label="`${ticket.type}  ${ticket.price}元`"
           :disabled="ticket.count == 0" />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="支付方式" prop="payment_type">
+      <el-select v-model="orderForm.payment_type">
+        <el-option v-for="paymentMethod in paymentMethods" :value="paymentMethod.trueType" :label="`${paymentMethod.type}`"
+                   :disabled="!paymentMethod.status" />
       </el-select>
     </el-form-item>
     <el-form-item>

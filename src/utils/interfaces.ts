@@ -16,6 +16,12 @@ interface TicketInfo {
   count: number,
 }
 
+interface PaymentInfo{
+  type: string,
+  trueType: string,
+  status: boolean
+}
+
 interface RouteInfo {
   id: number,
   name: string,
@@ -48,4 +54,4 @@ interface TrainDetailInfo {
   extra_infos: Array<string>
 }
 
-export { OrderDetailData, TicketInfo, RouteInfo, StationInfo, TrainInfo,TrainDetailInfo }
+export { OrderDetailData, TicketInfo,PaymentInfo, RouteInfo, StationInfo, TrainInfo,TrainDetailInfo }
