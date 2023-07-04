@@ -87,6 +87,8 @@ onMounted(() => {
           <el-text size="large" tag="b">
             {{ order.price }}
           </el-text>
+        </div>
+        <div>
           <el-text size="large" tag="b" type="primary">
             订单状态:&nbsp;&nbsp;
           </el-text>

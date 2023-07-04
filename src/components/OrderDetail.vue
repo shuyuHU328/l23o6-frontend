@@ -64,7 +64,7 @@ const getTrain = () => {
       method: 'GET'
     }).then((res) => {
       train.data = res.data.data
-      console.log(train)
+      console.log(train.data)
     }).catch((error) => {
       ElNotification({
         offset: 70,
@@ -87,9 +87,12 @@ const pay = (id: number) => {
   }).then((res) => {
     console.log(res)
     if (res.data.data != 'success') {
+      let url = "localhost:8080/v1/alipay"
+      let path = window.location.protocol + '//' + url;
+      window.location.href = path;
       console.log(res.data.data)
-      payContent.value = res.data.data
-      showScript = true
+      // payContent.value = res.data.data
+      // showScript = true
       // const iframe = document.getElementById('processPay')
       // console.log(iframe)
       // window.location.reload()
@@ -182,12 +185,14 @@ getOrderDetail()
       </div>
     </div>
     <div style="display: flex; justify-content: space-between;">
+      <div>
       <el-text size="large" tag="b" type="primary">
         价格:&nbsp;&nbsp;
       </el-text>
       <el-text size="large" tag="b">
         {{ orderDetail.data.price }}
       </el-text>
+      </div>
       <div>
         <el-text size="large" tag="b" type="primary">
           支付方式:&nbsp;&nbsp;
@@ -259,12 +264,12 @@ getOrderDetail()
 
 
   </div>
-  <el-dialog v-model="showScript" title="支付宝支付" width="50%" draggable destroy-on-close>
-    <div>
-      <iframe id="processPay" :srcdoc="payContent.value" width="100%" height="800px">
-      </iframe>
-    </div>
-  </el-dialog>
+<!--  <el-dialog v-model="showScript" title="支付宝支付" width="50%" draggable destroy-on-close>-->
+<!--    <div>-->
+<!--      <iframe id="processPay" :srcdoc="payContent.value" width="100%" height="800px">-->
+<!--      </iframe>-->
+<!--    </div>-->
+<!--  </el-dialog>-->
 </template>
 
 <style scoped></style>
