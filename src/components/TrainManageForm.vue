@@ -29,7 +29,7 @@ let train = reactive({
   departure_times: props.departure_times as Array<string>,
   arrival_times: props.arrival_times as Array<string>,
   extra_infos: props.extra_infos as Array<string>,
-  price_infos:[[0]]
+  price_infos: [[0]]
 })
 let route = reactive({
   id: 0,
@@ -69,7 +69,11 @@ const getRoute = () => {
     route.id = res.data.data.id
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
-    train.price_infos=new Array(route.station_ids.length).fill(new Array(5).fill(0))
+    train.price_infos = new Array(route.station_ids.length).fill(new Array(5).fill(0))
+    for (let i = 0; i < train.price_infos.length; i++) {
+      train.price_infos[i]=[200,150,100,50,20]
+
+    }
   }).catch((error) => {
     if (error.response?.data.code == 100003) {
       router.push('/login')
@@ -140,7 +144,7 @@ getRoute()
               路线名
             </el-text>
           </template>
-          <el-select v-model="train.route_id" style="width: 100%" >
+          <el-select v-model="train.route_id" style="width: 100%">
             <el-option v-for="singleRoute in routes" :key="singleRoute.id" :label="singleRoute.name"
                        :value="singleRoute.id"/>
           </el-select>
@@ -174,7 +178,7 @@ getRoute()
       </el-card>
     </div>
     <!--新增价格设置-->
-    <el-text tag="b" type="info">
+    <el-text v-if="route.station_ids.length>0" tag="b" type="info">
       价格设置
     </el-text>
     <div v-for="(station, index) in route.station_ids" :key="station">
@@ -190,7 +194,7 @@ getRoute()
           <div style="width: 80%">
             {{ stations.idToName[station] }} - {{ stations.idToName[route.station_ids[index + 1]] }}
           </div>
-<!--          {{train.price_infos[index][0]}}-->
+          <!--          {{train.price_infos[index][0]}}-->
           <div v-if="train.train_type=='高铁'">
             <el-row>
               <el-col :span="10">
@@ -269,15 +273,15 @@ getRoute()
                   <el-input v-model="train.price_infos[index][3]"/>
                 </el-form-item>
 
-              <el-form-item style="margin-left: 5%">
-                <template #label>
-                  <el-text tag="b">
-                    无座
-                  </el-text>
-                </template>
-                <el-input v-model="train.price_infos[index][4]"/>
-              </el-form-item>
-            </el-col>
+                <el-form-item style="margin-left: 5%">
+                  <template #label>
+                    <el-text tag="b">
+                      无座
+                    </el-text>
+                  </template>
+                  <el-input v-model="train.price_infos[index][4]"/>
+                </el-form-item>
+              </el-col>
             </el-row>
           </div>
 
