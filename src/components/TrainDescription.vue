@@ -15,7 +15,7 @@ const props = defineProps({
   end_station_id: Number,
   departure_time: Number,
   arrival_time: Number,
-  ticket_info: Array as PropType<TicketInfo[]>
+  ticket_info: Array as PropType<TicketInfo[]>,
 })
 
 const router = useRouter()
@@ -25,12 +25,12 @@ const stations = useStationsStore()
 let drawer = ref(false)
 let dialog = ref(false)
 
-const handleOrder = (name : String) => {
+const handleOrder = () => {
   dialog.value = true
   if (user.name === '') {
     router.push('/login')
   }
-  console.log('get info!')
+  // console.log('get info!')
   // const r = request({
   //   url:`/train/${props.id}`,
   //   method:'GET',
@@ -79,7 +79,7 @@ const handleOrder = (name : String) => {
       <el-button @click="drawer = true">
         查看详情
       </el-button>
-      <el-button type="primary" @click="handleOrder(<String>name)">
+      <el-button type="primary" @click="handleOrder">
         购买
       </el-button>
     </div>

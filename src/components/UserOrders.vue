@@ -79,15 +79,33 @@ onMounted(() => {
           </el-text>
         </div>
       </div>
-
-      <div>
-        <el-text size="large" tag="b" type="primary">
-          订单状态:&nbsp;&nbsp;
-        </el-text>
-        <el-text size="large" tag="b">
-          {{ order.status }}
-        </el-text>
+      <div style="display: flex; justify-content: space-between;">
+        <div>
+          <el-text size="large" tag="b" type="primary">
+            价格:&nbsp;&nbsp;
+          </el-text>
+          <el-text size="large" tag="b">
+            {{ order.price }}
+          </el-text>
+          <el-text size="large" tag="b" type="primary">
+            订单状态:&nbsp;&nbsp;
+          </el-text>
+          <el-text size="large" tag="b">
+            {{ order.status }}
+          </el-text>
+        </div>
+<!--        <div>-->
+<!--          <el-text size="large" tag="b" type="primary">-->
+<!--            支付方式:&nbsp;&nbsp;-->
+<!--          </el-text>-->
+<!--          <el-text size="large" tag="b">-->
+<!--            {{ order.payment_type==='credit'?'积分支付':'支付宝' }}-->
+<!--          </el-text>-->
+<!--        </div>-->
       </div>
+<!--      <div>-->
+<!--        -->
+<!--      </div>-->
 
       <el-row class="el-row">
         <el-col :span="24" style="display: flex; justify-content: center; align-items: center">

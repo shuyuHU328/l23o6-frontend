@@ -54,6 +54,7 @@ const addTrain = (train: TrainInfo) => {
     })
     return
   }
+  console.log(train.price_infos)
   request({
     url: '/admin/train',
     method: 'POST',

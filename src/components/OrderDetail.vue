@@ -1,16 +1,17 @@
 <script setup lang="ts">
 
-import { request } from "~/utils/request";
-import { ElNotification } from "element-plus";
-import { h, onMounted, reactive, watch } from "vue";
-import { useStationsStore } from "~/stores/stations";
-import { parseDate } from "~/utils/date";
-import { useRouter } from "vue-router";
-import { OrderDetailData } from "~/utils/interfaces";
+import {request} from "~/utils/request";
+import {ElNotification} from "element-plus";
+import {h, onMounted, reactive, watch} from "vue";
+import {useStationsStore} from "~/stores/stations";
+import {parseDate} from "~/utils/date";
+import {useRouter} from "vue-router";
+import {OrderDetailData} from "~/utils/interfaces";
 
 const router = useRouter()
 const stations = useStationsStore()
-
+let showScript = false
+let payContent = reactive({value: String})
 const props = defineProps({
   id: Number,
 })
@@ -26,6 +27,8 @@ let orderDetail = reactive<{ data: OrderDetailData }>({
     end_station_id: 0,
     departure_time: '',
     arrival_time: '',
+    price: 0,
+    payment_type: '',
   },
 })
 
@@ -48,7 +51,7 @@ const getOrderDetail = () => {
     ElNotification({
       offset: 70,
       title: 'getOrder错误',
-      message: h('i', { style: 'color: teal' }, err.response?.data.msg),
+      message: h('i', {style: 'color: teal'}, err.response?.data.msg),
     })
   })
 }
@@ -66,7 +69,7 @@ const getTrain = () => {
       ElNotification({
         offset: 70,
         title: 'getTrain错误(orderDetail)',
-        message: h('error', { style: 'color: teal' }, error.response?.data.msg),
+        message: h('error', {style: 'color: teal'}, error.response?.data.msg),
       })
       console.log(error)
     })
@@ -82,13 +85,21 @@ const pay = (id: number) => {
       status: '已支付'
     }
   }).then((res) => {
+    console.log(res)
+    if (res.data.data != 'success') {
+      console.log(res.data.data)
+      payContent.value = res.data.data
+      showScript = true
+      // const iframe = document.getElementById('processPay')
+      // console.log(iframe)
+      // window.location.reload()
+    }
     ElNotification({
       offset: 70,
       title: '支付成功',
-      message: h('success', { style: 'color: teal' }, res.data.msg),
+      message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     getOrderDetail()
-    console.log(res)
   }).catch((error) => {
     if (error.response?.data.code == 100003) {
       router.push('/login')
@@ -96,7 +107,7 @@ const pay = (id: number) => {
     ElNotification({
       offset: 70,
       title: '支付失败',
-      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
     console.log(error)
   })
@@ -113,7 +124,7 @@ const cancel = (id: number) => {
     ElNotification({
       offset: 70,
       title: '取消成功',
-      message: h('success', { style: 'color: teal' }, res.data.msg),
+      message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     getOrderDetail()
     console.log(res)
@@ -124,7 +135,7 @@ const cancel = (id: number) => {
     ElNotification({
       offset: 70,
       title: '取消失败',
-      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
     console.log(error)
   })
@@ -170,7 +181,22 @@ getOrderDetail()
         </el-text>
       </div>
     </div>
-
+    <div style="display: flex; justify-content: space-between;">
+      <el-text size="large" tag="b" type="primary">
+        价格:&nbsp;&nbsp;
+      </el-text>
+      <el-text size="large" tag="b">
+        {{ orderDetail.data.price }}
+      </el-text>
+      <div>
+        <el-text size="large" tag="b" type="primary">
+          支付方式:&nbsp;&nbsp;
+        </el-text>
+        <el-text size="large" tag="b">
+          {{ orderDetail.data.payment_type === 'credit' ? '积分支付' : '支付宝' }}
+        </el-text>
+      </div>
+    </div>
     <div>
       <el-text size="large" tag="b" type="primary">
         订单状态:&nbsp;&nbsp;
@@ -231,7 +257,14 @@ getOrderDetail()
       </div>
     </div>
 
+
   </div>
+  <el-dialog v-model="showScript" title="支付宝支付" width="50%" draggable destroy-on-close>
+    <div>
+      <iframe id="processPay" :srcdoc="payContent.value" width="100%" height="800px">
+      </iframe>
+    </div>
+  </el-dialog>
 </template>
 
 <style scoped></style>

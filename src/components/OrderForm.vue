@@ -96,7 +96,8 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
 
     r.then((response: AxiosResponse<any>) => {
       console.log(response)
-      router.push(`/order/${response.data.data.id}`)
+      // http://localhost:8080/v1/train/2
+      router.push(`/user`)
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       console.log()

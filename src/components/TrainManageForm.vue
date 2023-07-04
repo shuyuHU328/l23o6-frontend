@@ -15,6 +15,7 @@ const props = defineProps({
   arrival_times: Array,
   extra_infos: Array,
   train_type: String,
+  price_infos:Array
 })
 
 
@@ -29,7 +30,7 @@ let train = reactive({
   departure_times: props.departure_times as Array<string>,
   arrival_times: props.arrival_times as Array<string>,
   extra_infos: props.extra_infos as Array<string>,
-  price_infos: [[0]]
+  price_infos: props.price_infos as Array<Array<number>>
 })
 let route = reactive({
   id: 0,
@@ -69,10 +70,11 @@ const getRoute = () => {
     route.id = res.data.data.id
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
-    train.price_infos = new Array(route.station_ids.length).fill(new Array(5).fill(0))
-    for (let i = 0; i < train.price_infos.length; i++) {
-      train.price_infos[i]=[200,150,100,50,20]
-
+    if(train.price_infos.length<=1){
+      train.price_infos = new Array(route.station_ids.length-1).fill(new Array(5).fill(0))
+      for (let i = 0; i < train.price_infos.length; i++) {
+        train.price_infos[i]=[200,150,100,50,20]
+      }
     }
   }).catch((error) => {
     if (error.response?.data.code == 100003) {
