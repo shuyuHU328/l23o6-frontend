@@ -6,6 +6,7 @@ import { calDuration, parseDate } from "~/utils/date";
 import { useUserStore } from "~/stores/user";
 import { useRouter } from "vue-router";
 import { TicketInfo } from "~/utils/interfaces";
+import {request} from "~/utils/request";
 
 const props = defineProps({
   id: Number,
@@ -24,11 +25,20 @@ const stations = useStationsStore()
 let drawer = ref(false)
 let dialog = ref(false)
 
-const handleOrder = () => {
+const handleOrder = (name : String) => {
   dialog.value = true
   if (user.name === '') {
     router.push('/login')
   }
+  console.log('get info!')
+  const r = request({
+    url:`/train/${props.id}`,
+    method:'GET',
+  }).then((res) => {
+    console.log(res)
+  }).catch((error) => {
+    console.log(error)
+  })
 }
 </script>
 
@@ -69,7 +79,7 @@ const handleOrder = () => {
       <el-button @click="drawer = true">
         查看详情
       </el-button>
-      <el-button type="primary" @click="handleOrder">
+      <el-button type="primary" @click="handleOrder(name)">
         购买
       </el-button>
     </div>

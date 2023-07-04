@@ -35,6 +35,7 @@ const submit = () => {
   r.then((res) => {
     trains.res = res.data.data
     console.log("submit")
+    console.log(trains.res);
     empty.value = trains.res.length === 0;
   }).catch((error) => {
     console.log(error)

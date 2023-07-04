@@ -67,7 +67,7 @@ const orderRules = reactive<FormRules>({
     pattern: /^1[3456789]\d{9}$/, message: '手机号码不符合要求', trigger: 'change'
   }],
   seat_type: [{ required: true, message: '此字段为必填项', trigger: 'change' }],
-  payment_type:[{ required: true, message: '此字段为必填项', trigger: 'change' }],
+  payment_type:[{ required: true, message: '此字段为必选项', trigger: 'change' }],
 })
 
 const submitOrderForm = (formEl: FormInstance | undefined) => {
