@@ -25,7 +25,9 @@ let toAdd = reactive({
   train_type: '',
   departure_times: [],
   arrival_times: [],
-  extra_infos: []
+  extra_infos: [],
+  // 新增票价
+  price_infos: []
 })
 
 let toChange: TrainInfo = reactive({
@@ -36,7 +38,9 @@ let toChange: TrainInfo = reactive({
   date: '',
   departure_times: [],
   arrival_times: [],
-  extra_infos: []
+  extra_infos: [],
+  // 新增票价
+  price_infos: []
 })
 
 let add = ref(false)
@@ -60,7 +64,8 @@ const addTrain = (train: TrainInfo) => {
       departure_times: train.departure_times,
       arrival_times: train.arrival_times,
       extra_infos: train.extra_infos,
-      train_type: train.train_type
+      train_type: train.train_type,
+      price_infos: train.price_infos
     }
   }).then((res) => {
     ElNotification({
@@ -122,7 +127,8 @@ const changeTrain = (train: TrainInfo) => {
       departure_times: train.departure_times,
       arrival_times: train.arrival_times,
       extra_infos: train.extra_infos,
-      train_type: train.train_type
+      train_type: train.train_type,
+      price_infos: train.price_infos
     }
   }).then((res) => {
     ElNotification({

@@ -41,7 +41,8 @@ interface TrainInfo {
   date: string,
   departure_times: Array<string>,
   arrival_times: Array<string>,
-  extra_infos: Array<string>
+  extra_infos: Array<string>,
+  price_infos: Array<Array<number>>
 }
 
 interface TrainDetailInfo {

@@ -9,10 +9,10 @@ import "~/styles/index.scss";
 import "uno.css";
 import routes from '~pages'
 import App from './App.vue'
-import order from "~/pages/order.vue";
+// import order from "~/pages/order.vue";
 
 
-routes.push( { path: '/order/:orderId', component: order },)
+// routes.push( { path: '/order/:orderId', component: order },)
 
 const router = createRouter({
     history: createWebHistory(),
