@@ -22,6 +22,7 @@ onMounted(() => {
 
 const submit = () => {
   loading.value = true
+  console.log(search.date)
   const r = request({
     url: '/train',
     method: 'GET',

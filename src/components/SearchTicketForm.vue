@@ -11,11 +11,10 @@ const emit = defineEmits(['formUpdated'])
 
 const search = useSearchStore()
 const stations = useStationsStore()
-
 const form = reactive({
   start_station_id: search.start_station_id,
   end_station_id: search.end_station_id,
-  date: search.date
+  date: search.date,
 })
 
 const disabledDate = (time: Date) => {

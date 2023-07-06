@@ -98,6 +98,11 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       console.log(response)
       // http://localhost:8080/v1/train/2
       router.push(`/user`)
+      ElNotification({
+        offset: 70,
+        title: '订单创建成功',
+        message: h('success', {style: 'color: teal'}, '请在用户中心处查看并支付订单'),
+      })
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       console.log()

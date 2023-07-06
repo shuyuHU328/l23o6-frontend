@@ -10,8 +10,6 @@ import {OrderDetailData} from "~/utils/interfaces";
 
 const router = useRouter()
 const stations = useStationsStore()
-let showScript = false
-let payContent = reactive({value: String})
 const props = defineProps({
   id: Number,
 })
@@ -91,17 +89,12 @@ const pay = (id: number) => {
       let path = window.location.protocol + '//' + url;
       window.location.href = path;
       console.log(res.data.data)
-      // payContent.value = res.data.data
-      // showScript = true
-      // const iframe = document.getElementById('processPay')
-      // console.log(iframe)
-      // window.location.reload()
     }
-    ElNotification({
-      offset: 70,
-      title: '支付成功',
-      message: h('success', {style: 'color: teal'}, res.data.msg),
-    })
+    // ElNotification({
+    //   offset: 70,
+    //   title: '支付成功',
+    //   message: h('success', {style: 'color: teal'}, res.data.msg),
+    // })
     getOrderDetail()
   }).catch((error) => {
     if (error.response?.data.code == 100003) {
