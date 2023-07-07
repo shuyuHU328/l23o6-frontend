@@ -29,17 +29,17 @@ const router = useRouter()
 
 const aliPay : PaymentInfo = {
   type: "支付宝",
-  trueType:"alipay",
+  trueType:"支付宝支付",
   status: true
 } as PaymentInfo;
 
-const pointPay: PaymentInfo = {
-  type: "积分支付",
-  trueType: "credit",
+const wxPay: PaymentInfo = {
+  type: "微信支付",
+  trueType: "微信支付",
   status: true
 } as PaymentInfo;
 
-const paymentMethods = [aliPay,pointPay]
+const paymentMethods = [aliPay,wxPay]
 
 const orderFormRef = ref<FormInstance>()
 let orderForm = reactive({
@@ -49,6 +49,7 @@ let orderForm = reactive({
   phone: user.phone,
   seat_type: '',
   payment_type:'',
+  use_credit:false
 })
 
 const orderRules = reactive<FormRules>({
@@ -91,12 +92,12 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
         end_station_id: props.end_station_id,
         seat_type: orderForm.seat_type,
         payment_type: orderForm.payment_type,
+        use_credit:orderForm.use_credit,
       }
     })
 
     r.then((response: AxiosResponse<any>) => {
       console.log(response)
-      // http://localhost:8080/v1/train/2
       router.push(`/user`)
       ElNotification({
         offset: 70,
@@ -189,7 +190,14 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
           :disabled="ticket.count == 0" />
       </el-select>
     </el-form-item>
-    <el-form-item label="支付方式" prop="payment_type">
+    <el-form-item label="是否使用积分">
+      <el-radio-group v-model="orderForm.use_credit">
+        <el-radio :label="true">是</el-radio>
+        <el-radio :label="false">否</el-radio>
+      </el-radio-group>
+
+    </el-form-item>
+    <el-form-item label="支付方式" prop="credit_init">
       <el-select v-model="orderForm.payment_type">
         <el-option v-for="paymentMethod in paymentMethods" :value="paymentMethod.trueType" :label="`${paymentMethod.type}`"
                    :disabled="!paymentMethod.status" />
