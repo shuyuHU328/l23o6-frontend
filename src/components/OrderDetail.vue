@@ -191,7 +191,7 @@ getOrderDetail()
           支付方式:&nbsp;&nbsp;
         </el-text>
         <el-text size="large" tag="b">
-          {{ orderDetail.data.payment_type === 'credit' ? '积分支付' : '支付宝' }}
+          {{ orderDetail.data.payment_type === '支付宝支付' ? '支付宝' : '微信支付' }}
         </el-text>
       </div>
     </div>
